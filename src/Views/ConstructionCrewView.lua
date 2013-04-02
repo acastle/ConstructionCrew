@@ -56,21 +56,13 @@ function Create(oMenuModel)
 		showMenu = not showMenu
 	end
 	
-	function self.IsMenuShowing()
-		return showMenu
-	end
-	
-	function self.IsInsideMenu(ivX, ivY)
-		if ivY == 1 then
-			return false
+	function self.GetElement(ivX, ivY)
+		if ivY == 1 && ivX <= 6 then
+			return ViewComponents.Menu_Button
 		end
-		if ivX > 20 then
-			return false
+		if showMenu && ivY <= #oMenuModel.Modules && ivY > 1 && ivX <= 20 && then
+			return ViewComponents.Menu_Item, ivY - 1
 		end
-		if ivY > #oMenuModel.Modules + 1 then
-			return false
-		end
-		return true
 	end
 	
 	return self

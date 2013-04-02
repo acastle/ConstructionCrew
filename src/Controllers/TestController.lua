@@ -7,19 +7,11 @@ function Create(oEventManager, oView, oMenuModel, oTestModel)
 	
 	local function OnKeyDown(ivKeyCode)
 		oTestModel.lastEvent = "Keydown! KeyCode: "..ivKeyCode
-		if ivKeyCode == 16 then
-			os.queueEvent("terminate")
-		end
 		oEventManager.Emit(self, ModuleEvents.Render)
 	end
 	
 	local function OnClick(ivButton, ivXCoord, ivYCoord)
 		oTestModel.lastEvent = "Mouse click! Button: "..ivButton..", X: "..ivXCoord..", Y: "..ivYCoord
-		if (ivYCoord == 1 and ivXCoord <= 6) 
-		    or (oView.IsMenuShowing() and not oView.IsInsideMenu(ivXCoord, ivYCoord)) then
-			oView.ToggleMenu()
-		end
-		oEventManager.Emit(self, ModuleEvents.Render)
 	end
 	
 	local function OnDrag(ivButton, ivXCoord, ivYCoord)
