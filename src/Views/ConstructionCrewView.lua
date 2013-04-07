@@ -7,60 +7,92 @@ function Create(oMenuModel)
 	
 	function self.Render()
 		local mX, mY = term.getSize()
+		local backgroundFrame = {}
+		local overlayFrame = {}
 		local x, y
-		
+		local currentRow
+		local currentInstruction
+
 		-- Draw top bar
-		term.setBackgroundColor(colors.lightBlue)
-		y = 1
+		currentRow = ""
 		for x = 1, mX do
-			term.setCursorPos(x, y)
-			term.write(" ")
+			currentRow = currentRow.." "
 		end
-		term.setCursorPos(1, 1)
+		currentInstruction = {
+			X = 1,
+			Y = 1,
+			BackgroundColor = colors.lightBlue,
+			Color = colors.black,
+			Data = currentRow
+		}
+		table.insert(backgroundFrame, currentInstruction)
 		
-		if showMenu then 
-			term.setBackgroundColor(colors.gray) 
-			term.setTextColor(colors.white)
+		currentRow = " Menu "
+		currentInstruction = {
+			X = 1,
+			Y = 1,
+			Data = currentRow
+		}
+		if showMenu then
+			currentInstruction.BackgroundColor = colors.blue
+			currentInstruction.Color = colors.white
 		else
-			term.setTextColor(colors.gray)
+			currentInstruction.BackgroundColor = colors.lightBlue
+			currentInstruction.Color = colors.black
 		end
-		term.write(" Menu ")
+		table.insert(backgroundFrame, currentInstruction)
 		
 		-- Draw content area
-		term.setBackgroundColor(colors.white)
 		for y = 2, mY do
+			currentRow = ""
 			for x = 1, mX do
-				term.setCursorPos(x, y)
-				term.write(" ")
+				currentRow = currentRow.." "
 			end
+			currentInstruction = {
+				X = 1,
+				Y = y,
+				BackgroundColor = colors.white,
+				Color = colors.black,
+				Data = currentRow
+			}
+			table.insert(backgroundFrame, currentInstruction)
 		end
 		
 		-- Draw the menu
 		if showMenu then
-			term.setBackgroundColor(colors.lightGray)
-			term.setTextColor(colors.black)
 			for moduleId = 1, #oMenuModel.Modules do
 				local moduleName = oMenuModel.Modules[moduleId]
-				term.setCursorPos(1, moduleId + 1)
-				term.write(" "..moduleName)
+				currentRow = " "..moduleName
 				for x = 2, 20 - string.len(moduleName) do
-					term.write(" ")
+					currentRow = currentRow.." "
 				end
+				currentInstruction = {
+					X = 1,
+					Y = moduleId + 1,
+					BackgroundColor = colors.lightGray,
+					Color = colors.black,
+					Data = currentRow
+				}
+				table.insert(overlayFrame, currentInstruction)
 			end
 		end
 		
-		term.setCursorPos(1, 1)
+		return backgroundFrame, overlayFrame
 	end
 	
 	function self.ToggleMenu()
 		showMenu = not showMenu
 	end
+
+	function self.MenuShowing()
+		return showMenu
+	end
 	
 	function self.GetElement(ivX, ivY)
-		if ivY == 1 && ivX <= 6 then
+		if ivY == 1 and ivX <= 6 then
 			return ViewComponents.Menu_Button
 		end
-		if showMenu && ivY <= #oMenuModel.Modules && ivY > 1 && ivX <= 20 && then
+		if showMenu and ivY <= #oMenuModel.Modules + 1 and ivY > 1 and ivX <= 20 then
 			return ViewComponents.Menu_Item, ivY - 1
 		end
 	end

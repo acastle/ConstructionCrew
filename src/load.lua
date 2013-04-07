@@ -11,11 +11,15 @@ local apis = {
 	"Components/KeyboardListener",
 	"Components/MouseListener",
 	"Components/ComponentExecutionManager",
+	"Components/ViewRenderer",
 	"Controllers/Controller",
 	"Controllers/TestController",
+	"Controllers/DesignerController",
+	"Views/ViewComponents",
 	"Views/ConstructionCrewView",
 	"Views/View",
-	"Views/TestView"
+	"Views/TestView",
+	"Views/DesignerView"
 }
 
 function Install(apis)

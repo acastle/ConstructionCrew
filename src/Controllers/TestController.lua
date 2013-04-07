@@ -1,27 +1,26 @@
-function Create(oEventManager, oView, oMenuModel, oTestModel)
-	local super = Controller.Create(oEventManager, oView)
+function Create(oEventManager, oModuleManager, oView, oMenuModel, oTestModel)
+	local super = Controller.Create(oEventManager, oModuleManager, oView, oMenuModel)
 	local self = {}
 	setmetatable(self, {__index = super})
 	
-	local lastEvent = ""
-	
 	local function OnKeyDown(ivKeyCode)
-		oTestModel.lastEvent = "Keydown! KeyCode: "..ivKeyCode
-		oEventManager.Emit(self, ModuleEvents.Render)
+		oTestModel.LastEvent = "Keydown! KeyCode: "..ivKeyCode
+		oEventManager.Emit(self, ModuleEvents.Render, oView.Render())
 	end
 	
 	local function OnClick(ivButton, ivXCoord, ivYCoord)
-		oTestModel.lastEvent = "Mouse click! Button: "..ivButton..", X: "..ivXCoord..", Y: "..ivYCoord
+		oTestModel.LastEvent = "Mouse click! Button: "..ivButton..", X: "..ivXCoord..", Y: "..ivYCoord
+		oEventManager.Emit(self, ModuleEvents.Render, oView.Render())
 	end
 	
 	local function OnDrag(ivButton, ivXCoord, ivYCoord)
-		oTestModel.lastEvent = "Mouse Drag! Button: "..ivButton..", X: "..ivXCoord..", Y: "..ivYCoord
-		oEventManager.Emit(self, ModuleEvents.Render)
+		oTestModel.LastEvent = "Mouse Drag! Button: "..ivButton..", X: "..ivXCoord..", Y: "..ivYCoord
+		oEventManager.Emit(self, ModuleEvents.Render, oView.Render())
 	end
 	
 	local function OnScroll(ivDirection, ivXCoord, ivYCoord)
-		oTestModel.lastEvent = "Mouse Scroll! Direction: "..ivDirection..", X: "..ivXCoord..", Y: "..ivYCoord
-		oEventManager.Emit(self, ModuleEvents.Render)
+		oTestModel.LastEvent = "Mouse Scroll! Direction: "..ivDirection..", X: "..ivXCoord..", Y: "..ivYCoord
+		oEventManager.Emit(self, ModuleEvents.Render, oView.Render())
 	end
 	
 	function self.Activate()

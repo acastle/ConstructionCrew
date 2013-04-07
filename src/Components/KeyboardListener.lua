@@ -4,7 +4,6 @@ function Create(oEventManager)
 	setmetatable(self, {__index = super})
 
 	function self.Run()
-		print("Running Keyboard Listener")
 		while true do
 			local _, oKeycode = os.pullEvent("key")
 			if self.IsActive() == false then
